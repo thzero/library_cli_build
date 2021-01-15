@@ -1,0 +1,10 @@
+{
+	"app": {
+		"owner": "OWNER",
+		"token": "TOKEN",
+		"logging": {
+			"level": "LOGGING_LEVEL",
+			"prettify": "LOGGING_PRETTIFY"
+		}
+	}
+}

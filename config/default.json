@@ -1,0 +1,8 @@
+{
+	"app": {
+        "logging": {
+            "level": null,
+            "prettify": true
+        }
+    }
+}
