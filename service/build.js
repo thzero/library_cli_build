@@ -27,20 +27,17 @@ class BuildService extends Service {
 		}
 	}
 
-	async process(correlationId) {
+	async process(correlationId, args) {
 		try {
-			if (process.argv.length < 3)
-				throw Error('Invalid arguments, must specific a build type name.');
-			const name = process.argv[2];
-			if (String.isNullOrEmpty(name))
-				throw Error('Invalid arguments, must specific a build type name.');
+			this._enforceNotNull('BuildService', 'process', args, 'args', correlationId);
+			this._enforceNotEmpty('BuildService', 'process', args.build, 'args.build', correlationId);
 
 			this._logger.info2('');
-			this._logger.info2(`building '${name}'...`);
+			this._logger.info2(`building '${args.build}'...`);
 
 			const builds = this._config.get("builds");
 			this._enforceNotNull('BuildService', 'process', builds, 'builds', correlationId);
-			const build = builds.find(l => l.name.toLowerCase() === name.toLowerCase());
+			const build = builds.find(l => l.name.toLowerCase() === args.build.toLowerCase());
 			this._enforceNotNull('BuildService', 'process', build, 'build', correlationId);
 			this._enforceNotNull('BuildService', 'process', build.repos, 'build.repos', correlationId);
 

@@ -10,6 +10,10 @@ class Cli {
 		return this._processCommand(args);
 	}
 
+	get args() {
+		return this._args;
+	}
+
 	_determineCommand(args) {
 		this._cmd = 'build';
 
@@ -44,24 +48,24 @@ library-cli-build <options>
 			case 'build':
 				console.log('build');
 
-				const apiArgs = {
+				this._args = {
 					dependencyCheck: true
 				};
 
 				if ((args.build !== null && args.build !== undefined) || (args.b !== null && args.b !== undefined))
-					apiArgs.build = args.build || args.b;
+					this._args.build = args.build || args.b;
 
 				if ((args.dependencyCheck !== null && args.dependencyCheck !== undefined) || (args.dc !== null && args.dc !== undefined))
-					apiArgs.dependencyCheck = args.dependencyCheck || args.dc;
+					this._args.dependencyCheck = args.dependencyCheck || args.dc;
 
 				if ((args.versionIncrement !== null && args.versionIncrement !== undefined) || (args.vi !== null && args.vi !== undefined))
-					apiArgs.versionIncrement = args.versionIncrement || args.vi;
+					this._args.versionIncrement = args.versionIncrement || args.vi;
 
 				if ((args.versionUpdate !== null && args.versionUpdate !== undefined) || (args.vu !== null && args.vu !== undefined))
-					apiArgs.versionUpdate = args.minor || args.vu;
+					this._args.versionUpdate = args.minor || args.vu;
 
-				console.log(apiArgs);
-				if (String.isNullOrEmpty(apiArgs.build)) {
+				console.log(this._args);
+				if (String.isNullOrEmpty(this._args.build)) {
 					console.log('No --build specified, see --help.');
 					return false;
 				}

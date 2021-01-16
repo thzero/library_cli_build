@@ -62,13 +62,8 @@ class BootMain {
 			}
 
 			try {
-				// Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
-				// const octokit = new Octokit({ auth: config.token });
-
-				// let library = 'library_cli';
-				// await processLibrary(library, octokit);
 				const service = this._injector.getService(Constants.InjectorKeys.SERVICE_BUILD);
-				service.process(LibraryUtility.generateId());
+				service.process(LibraryUtility.generateId(), cli.args);
 			}
 			catch (err) {
 				loggerServiceI.exception('Build', 'init', err);
