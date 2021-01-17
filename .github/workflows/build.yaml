@@ -26,7 +26,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        repository: thzero/library_cli
+        repository: thzero/test
         path: library_cli
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -38,9 +38,9 @@ jobs:
     # - run: npm test
     - run: npm install -g npm-check-updates
     - run: ncu -u
-      working-directory: ./library_cli
+      working-directory: ./test
     - run: npm install
-      working-directory: ./library_cli
+      working-directory: ./test
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
@@ -48,4 +48,3 @@ jobs:
         commit-message: npm updates
         title: 'npm updates'
         #labels: report, automated pr
-      working-directory: ./library_cli
