@@ -36,7 +36,7 @@ jobs:
     # - run: npm install
     # - run: npm run build --if-present
     # - run: npm test
-    - run: npm install ncu -g
+    - run: npm install -g npm-check-updates
     - run: ncu
     - run: npm install
       working-directory: ./library_cli
