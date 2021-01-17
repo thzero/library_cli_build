@@ -39,3 +39,4 @@ jobs:
     - run: npm install
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      working-directory: ./library_cli
