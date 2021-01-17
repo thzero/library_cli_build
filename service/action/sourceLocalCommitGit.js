@@ -18,7 +18,7 @@ class GitSourceLocalCommitBuildService extends ActionBuildService {
 		results.push(result);
 		result = await git.add('.');
 		results.push(result);
-		result = await git.commit('npm updates');
+		result = await git.commit(repo.label);
 		results.push(result);
 		result = await git.push();
 		results.push(result);

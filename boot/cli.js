@@ -62,7 +62,10 @@ library-cli-build <options>
 					this._args.versionIncrement = args.versionIncrement || args.vi;
 
 				if ((args.versionUpdate !== null && args.versionUpdate !== undefined) || (args.vu !== null && args.vu !== undefined))
-					this._args.versionUpdate = args.minor || args.vu;
+					this._args.versionUpdate = args.versionUpdate || args.vu;
+
+				if ((args.label !== null && args.label !== undefined) || (args.l !== null && args.l !== undefined))
+					this._args.label = args.label || args.l;
 
 				console.log(this._args);
 				if (String.isNullOrEmpty(this._args.build)) {

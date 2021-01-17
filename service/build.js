@@ -45,7 +45,7 @@ class BuildService extends Service {
 			const buildService = this._buildProcessors.find(l => l.tag === tag);
 			this._enforceNotNull('BuildService', 'buildService', buildService, 'buildService', correlationId);
 
-			return await this._processRepos(correlationId, build.repos, buildService);
+			return await this._processRepos(correlationId, args, build.repos, buildService);
 		}
 		catch (err) {
 			return this._error('BuildService', 'process', null, err, null, null, correlationId);
@@ -56,7 +56,8 @@ class BuildService extends Service {
 		}
 	}
 
-	async _processRepos(correlationId, repos, buildService) {
+	async _processRepos(correlationId, args, repos, buildService) {
+		this._enforceNotNull('BuildService', '_processRepos', args, 'args', correlationId);
 		this._enforceNotNull('BuildService', '_processRepos', repos, 'repos', correlationId);
 		this._enforceNotNull('BuildService', '_processRepos', buildService, 'buildService', correlationId);
 
@@ -65,13 +66,13 @@ class BuildService extends Service {
 			this._logger.debug('BuildService', '_processRepos', 'repo', repo, correlationId);
 
 			if (repo.isGroup)
-				return await this._processRepos(correlationId, repo.repos, buildService);
+				return await this._processRepos(correlationId, args, repo.repos, buildService);
 
 			this._logger.debug('BuildService', '_processRepos', 'repo.repo', repo.repo, correlationId);
 			if (String.isNullOrEmpty(repo.repo))
 				throw Error('Repo has invalid repo name');
 
-			response = await this._processExecute(correlationId, LibraryUtility.cloneDeep(repo), buildService);
+			response = await this._processExecute(correlationId, args, LibraryUtility.cloneDeep(repo), buildService);
 			if (!response.success)
 				return response;
 		}
@@ -79,8 +80,9 @@ class BuildService extends Service {
 		return this._success(correlationId);
 	}
 
-	async _processExecute(correlationId, repo, buildService) {
+	async _processExecute(correlationId, args, repo, buildService) {
 		try {
+			this._enforceNotNull('BuildService', '_process', args, 'args', correlationId);
 			this._enforceNotNull('BuildService', '_process', repo, 'repo', correlationId);
 			this._enforceNotEmpty('BuildService', '_process', repo.repo, 'repo.repo', correlationId);
 			this._enforceNotNull('BuildService', '_process', buildService, 'buildService', correlationId);
@@ -90,15 +92,18 @@ class BuildService extends Service {
 
 			const repoCwdPath = path.normalize(`${process.cwd()}\\..\\${repo.repo}`);
 
-			const packagePath = `${repoCwdPath}\\package.json`;
-			this._logger.debug('BuildService', '_process', 'packagePath', packagePath, correlationId);
+			const pathPackage = `${repoCwdPath}\\package.json`;
+			this._logger.debug('BuildService', '_process', 'pathPackage', pathPackage, correlationId);
 
 			repo.pathCwd = repoCwdPath;
-			repo.pathPackage = packagePath;
-			repo.label = null;
+			repo.pathPackage = pathPackage;
+			repo.dependencyCheck = args.dependencyCheck;
+			repo.label = args.label;
+			repo.versionIncrement = args.versionIncrement;
+			repo.versionUpdate = args.versionUpdate;
 			repo.dependencyCheck = repo.dependencyCheck !== undefined ? repo.dependencyCheck : true;
 
-			return buildService.process(LibraryUtility.generateId(), repo);
+			return await buildService.process(LibraryUtility.generateId(), repo);
 		}
 		finally {
 			this._logger.info2(`...processed repo '${repo ? repo.repo : '<unknown>'}'.`);

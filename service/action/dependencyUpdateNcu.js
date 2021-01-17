@@ -12,13 +12,18 @@ class NcuDepdencyUpdateBuildService extends ActionBuildService {
 			upgrade: true,
 			jsonUpgraded: true,
 			silent: false,
-			packageFile: repo.packagePath
+			packageFile: repo.pathPackage
 		});
 
 		this._logger.debug('NcuDepdencyUpdateBuildService', '_process', 'upgrades', upgrades, correlationId);
 
 		const upgraded = (upgrades ? (Object.entries(upgrades).length > 0) : false);
 		this._logger.debug('NcuDepdencyUpdateBuildService', '_process', 'upgrades', upgraded, correlationId);
+
+		if (upgraded) {
+			this._info(`Npm changes detected.`);
+			repo.label = 'npm changes';
+		}
 
 		return this._successResponse(upgraded, correlationId);
 	}

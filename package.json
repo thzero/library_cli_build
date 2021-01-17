@@ -41,6 +41,6 @@
     "simple-git": "^2.31.0"
   },
   "devDependencies": {
-    "@thzero/library_cli": "^0.12.6"
+    "@thzero/library_cli": "^0.12.7"
   }
 }

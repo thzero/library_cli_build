@@ -14,6 +14,10 @@ class GitSourceLocalStausBuildService extends ActionBuildService {
 
 		const statusResults = await git.status();
 		const results = statusResults && statusResults.files ? statusResults.files.length > 0 : false;
+
+		if (!results)
+			this._info(`No status changes detected; nothing to commit.`);
+
 		return this._successResponse(results, correlationId);
 	}
 

@@ -9,7 +9,7 @@ class VersionBuildService extends ActionBuildService {
 
 	async _process(correlationId, repo) {
 		const results = await updateVersion({
-			packagePath: repo.packagePath,
+			packagePath: repo.pathPackage,
 			pi: true
 		});
 		this._logger.info2('\t\t' + (results.message || results.error) ? results.message ? results.message : '' : results.error ? results.error : 'failed');

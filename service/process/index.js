@@ -14,6 +14,13 @@ class ProcessBuildService extends Service {
 		return await this._process(correlationId, repo);
 	}
 
+	_checkAction(correlationId, repo, action) {
+		this._enforceNotNull('ProcessBuildService', '_checkAction', repo, 'repo', correlationId);
+		this._enforceNotNull('ProcessBuildService', '_checkAction', action, 'action', correlationId);
+
+		return (repo.action && (action.toLowerCase() === repo.action.toLowerCase()));
+	}
+
 	async _process(correlationId, repo) {
 		throw new NotImplementedError();
 	}

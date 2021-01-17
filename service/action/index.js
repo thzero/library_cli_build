@@ -22,8 +22,15 @@ class ActionBuildService extends Service {
 			return this._error('ActionBuildService', 'process', null, err, null, null, correlationId);
 		}
 		finally {
-			this._logger.info2(`\tprocessed ${this._step}...`);
+			this._logger.info2(`\t...processed ${this._step}`);
 		}
+	}
+
+	_checkAction(correlationId, repo, action) {
+		this._enforceNotNull('ProcessBuildService', '_checkAction', repo, 'repo', correlationId);
+		this._enforceNotNull('ProcessBuildService', '_checkAction', action, 'action', correlationId);
+
+		return (repo.action && (action.toLowerCase() === repo.action.toLowerCase()));
 	}
 
 	async _process(correlationId, repo) {
@@ -32,6 +39,14 @@ class ActionBuildService extends Service {
 
 	get _step() {
 		throw new NotImplementedError();
+	}
+
+	_info(message) {
+		this._logger.info2(`\t\t${message}`);
+	}
+
+	_info2(message) {
+		this._logger.info2(`\t\t\t${message}`);
 	}
 }
 
