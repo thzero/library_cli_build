@@ -41,10 +41,3 @@ jobs:
       working-directory: ./library_cli
     - run: npm install
       working-directory: ./library_cli
-    - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: npm updates
-          title: 'npm updates'
-          #labels: report, automated pr
